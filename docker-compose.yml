@@ -1,0 +1,29 @@
+services:
+  superset:
+    image: apache/superset
+    environment:
+      - SUPERSET_ENV=production
+    ports:
+      - "8088:8088"
+    restart: always
+    volumes:
+      - superset_home:/app/superset_home
+    depends_on:
+      - redis
+      - postgres
+
+  redis:
+    image: redis:alpine
+
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: superset
+      POSTGRES_PASSWORD: superset
+      POSTGRES_DB: superset
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  superset_home:
+  postgres_data:
